@@ -5,6 +5,9 @@ import * as PrimitiveLiteral from './primitiveLiteral';
 import Utils, {SourceArray} from './utils';
 
 export function queryOptions(value: SourceArray, index: number, metadataContext?: any): Lexer.Token {
+  if (value.length <= index) {
+    return Lexer.tokenize(value, index, index, { options: null }, Lexer.TokenType.QueryOptions);
+  }
   let token = queryOption(value, index, metadataContext);
   if (!token) {
     return;
@@ -113,6 +116,7 @@ export function expand(value: SourceArray, index: number, metadataContext?: any)
   } else {
     return;
   }
+
 
   const eq = Lexer.EQ(value, index);
   if (!eq) {
@@ -399,6 +403,7 @@ export function search(value: SourceArray, index: number): Lexer.Token {
   const start = index;
   if (Utils.equals(value, index, '%24search')) {
     index += 9;
+
   } else if (Utils.equals(value, index, '$search')) {
     index += 7;
   } else {
@@ -777,6 +782,7 @@ export function format(value: SourceArray, index: number): Lexer.Token {
     return;
   }
 
+
   const eq = Lexer.EQ(value, index);
   if (!eq) {
     return;
@@ -1047,7 +1053,7 @@ export function skiptoken(value: SourceArray, index: number): Lexer.Token {
   } else {
     return;
   }
-
+  
   const eq = Lexer.EQ(value, index);
   if (!eq) {
     return;
